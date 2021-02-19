@@ -137,6 +137,14 @@ public class Game : MonoBehaviour
      */
     private float sampleGaussian(float mean, float sd)
     {
-        return 0f;
+        // Two uniform random variables
+        float u1 = Random.Range(0, 1);
+        float u2 = Random.Range(0, 1);
+
+        // Box-Muller transform
+        float z = Mathf.Sqrt(-2f * Mathf.Log(u1)) * Mathf.Cos(2 * Mathf.PI * u2);
+
+        // Apply paramter scale
+        return z * sd + mean;
     }
 }
