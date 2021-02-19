@@ -171,7 +171,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 0b94a6c5cbaaf7541bae061196bea033, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -941,10 +941,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb988a6a74429284891586b95c6656cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teamSize: 0
-  playerPrefab: {fileID: 0}
-  players: []
-  team0: {fileID: 0}
+  teamSize: 15
+  playerPrefab: {fileID: 152344071}
+  team0: {fileID: 11400000, guid: ef857da4545336341a3786d2ebb4f8a3, type: 2}
   team1: {fileID: 11400000, guid: bccfc0376e2583e4296848225f26086a, type: 2}
   team0Score: 0
   team1Score: 0

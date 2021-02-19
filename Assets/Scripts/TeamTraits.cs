@@ -27,6 +27,13 @@ public class TeamTraits : ScriptableObject
     public float maxExhaustionMean;
     public float maxExhaustionSD;
 
+
+
+    [Header("Spawn info")]
     public Vector3 spawnOrigin;
-    public float spaweenRadius;
+    public float spawnRadius;
+    public Color color;
+
+
+    public List<GameObject> players;
 }

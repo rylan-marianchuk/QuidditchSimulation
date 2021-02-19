@@ -14,7 +14,7 @@ public class Game : MonoBehaviour
     public int teamSize = 5;
 
     public GameObject playerPrefab;
-    public List<BoidPlayer> players;
+    
 
     public TeamTraits team0;
     public TeamTraits team1;
@@ -22,13 +22,10 @@ public class Game : MonoBehaviour
 
     public int team0Score = 0;
     public int team1Score = 0;
-
-
-
     private int lastTeamScored;
 
     /**
-     * Generate players and their traits according to the scriptable object distribution
+     * Initialize game by spawning players
      * 
      */
     void Awake()
@@ -37,11 +34,24 @@ public class Game : MonoBehaviour
         if (! (teamSize >= 5 && teamSize <= 20))
             teamSize = 5;
 
+        team0.players = new List<GameObject>();
+        team1.players = new List<GameObject>();
         for (int i = 0; i < teamSize; i++){
             GameObject p1 = createPlayer(isTeam0: false);
-            GameObject p2 = createPlayer(isTeam0: true);
+            team1.players.Add(p1);
+            GameObject p0 = createPlayer(isTeam0: true);
+            team0.players.Add(p0);
         }
 
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(team0.spawnOrigin, team0.spawnRadius);
+
+        Gizmos.color = Color.black;
+        Gizmos.DrawSphere(team1.spawnOrigin, team1.spawnRadius);
     }
 
     void Start()
@@ -94,8 +104,7 @@ public class Game : MonoBehaviour
 
 
     /**
-     * 
-     * 
+     * Generate players and their traits according to the scriptable object distribution
      * 
      */
     private GameObject createPlayer(bool isTeam0)
@@ -103,12 +112,31 @@ public class Game : MonoBehaviour
         GameObject create;
         if (isTeam0)
         {
-            create = Instantiate(playerPrefab, team0.spawnOrigin + Random.onUnitSphere * team0.spaweenRadius, Quaternion.identity);
+            create = Instantiate(playerPrefab, team0.spawnOrigin + Random.onUnitSphere * team0.spawnRadius, Quaternion.identity);
+            create.GetComponent<Renderer>().material.color = team0.color;
+            BoidPlayer boidPlayer = create.GetComponent<BoidPlayer>();
+            boidPlayer.team = 0;
+            boidPlayer.respawnPosition = team0.spawnOrigin;
         }
         else
         {
-            create = Instantiate(playerPrefab, team1.spawnOrigin + Random.onUnitSphere * team1.spaweenRadius, Quaternion.identity);
+            create = Instantiate(playerPrefab, team1.spawnOrigin + Random.onUnitSphere * team1.spawnRadius, Quaternion.identity);
+            create.GetComponent<Renderer>().material.color = team1.color;
+            BoidPlayer boidPlayer = create.GetComponent<BoidPlayer>();
+            boidPlayer.team = 1;
+            boidPlayer.respawnPosition = team1.spawnOrigin;
         }
         return create;        
+    }
+
+
+    /**
+     * 
+     * Pull a single float from the specified Gaussian Distribution which uses Box-Muller transform.
+     * 
+     */
+    private float sampleGaussian(float mean, float sd)
+    {
+        return 0f;
     }
 }

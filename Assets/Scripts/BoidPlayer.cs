@@ -5,8 +5,7 @@ using UnityEngine;
 public class BoidPlayer : MonoBehaviour
 {
     public int team; // 0: Gryffindor, 1: Slytherin
-    public Color teamColor;
-    public Vector3 spawnPosition;
+    public Vector3 respawnPosition;
 
     // Traits
     private float aggressiveness;
@@ -49,7 +48,7 @@ public class BoidPlayer : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground") && this.isUnconscious)
         {
             // Teleport to spawn point and hold for penalty
-            gameObject.transform.position = spawnPosition;
+            gameObject.transform.position = respawnPosition;
         }
         else if (collision.gameObject.CompareTag("Snitch"))
         {
