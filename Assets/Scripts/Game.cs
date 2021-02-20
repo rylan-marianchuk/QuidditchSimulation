@@ -12,13 +12,15 @@ public class Game : MonoBehaviour
     public static Game instance;
 
     public int teamSize = 5;
+    public float unconsciousTimeHold;
 
     public GameObject playerPrefab;
     
 
     public TeamTraits team0;
     public TeamTraits team1;
-    
+
+    public bool debug = true;
 
     public int team0Score = 0;
     public int team1Score = 0;
@@ -30,6 +32,7 @@ public class Game : MonoBehaviour
      */
     void Awake()
     {
+        /*
         // Default team size to 5
         if (! (teamSize >= 5 && teamSize <= 20))
             teamSize = 5;
@@ -42,7 +45,9 @@ public class Game : MonoBehaviour
             GameObject p0 = createPlayer(isTeam0: true);
             team0.players.Add(p0);
         }
+        */
 
+        instance = this;
     }
 
     void OnDrawGizmos()

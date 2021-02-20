@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 152344073}
   - component: {fileID: 152344072}
   - component: {fileID: 152344076}
+  - component: {fileID: 152344077}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Player
@@ -208,7 +209,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 152344071}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.11, y: 0.41, z: 3}
+  m_LocalPosition: {x: -1.11, y: 5.92, z: 27.32}
   m_LocalScale: {x: 0.7, y: 1, z: 0.7}
   m_Children: []
   m_Father: {fileID: 0}
@@ -227,12 +228,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 0
-  respawnPosition: {x: 0, y: 0, z: 0}
+  respawnPosition: {x: -1, y: 6, z: 27}
   aggressiveness: 0
   maxExhaustion: 0
   maxVelo: 0
-  weight: 0
+  weight: 1
   currentExhaustion: 0
+--- !u!54 &152344077
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 152344071}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &291093828
 GameObject:
   m_ObjectHideFlags: 0
@@ -967,6 +984,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   teamSize: 15
+  unconsciousTimeHold: 500
   playerPrefab: {fileID: 152344071}
   team0: {fileID: 11400000, guid: ef857da4545336341a3786d2ebb4f8a3, type: 2}
   team1: {fileID: 11400000, guid: bccfc0376e2583e4296848225f26086a, type: 2}

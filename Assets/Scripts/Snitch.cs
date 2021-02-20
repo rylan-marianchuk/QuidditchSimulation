@@ -38,7 +38,7 @@ public class Snitch : MonoBehaviour
         if (slerpRest == 0 && Random.Range(0.0000f, 0.9999f) < changeProportion)
         {
             // Update direction randomly
-            Debug.Log("Snitch Updated velocity vector!");
+            //if (Game.instance.debug) Debug.Log("Snitch Updated velocity vector!");
 
             newDirection = Random.onUnitSphere * scaledVelocity;
         }
