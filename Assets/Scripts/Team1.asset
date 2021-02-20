@@ -12,43 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a4ca9290a4414945a47d525d420ce69, type: 3}
   m_Name: Team1
   m_EditorClassIdentifier: 
-  weightMean: 0
-  weightSD: 0
-  maxVeloMean: 0
-  maxVeloSD: 0
-  agressivenessMean: 0
-  agressivenessSD: 0
-  maxExhaustionMean: 0
-  maxExhaustionSD: 0
+  weightMean: 75
+  weightSD: 12
+  maxVeloMean: 18
+  maxVeloSD: 2
+  agressivenessMean: 22
+  agressivenessSD: 3
+  maxExhaustionMean: 65
+  maxExhaustionSD: 13
   spawnOrigin: {x: 32, y: 8, z: -32}
   spawnRadius: 7
   color: {r: 0, g: 0, b: 0, a: 0}
   players:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}

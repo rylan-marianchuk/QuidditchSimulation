@@ -117,6 +117,10 @@ public class Game : MonoBehaviour
             BoidPlayer boidPlayer = create.GetComponent<BoidPlayer>();
             boidPlayer.team = 0;
             boidPlayer.respawnPosition = team0.spawnOrigin;
+            boidPlayer.aggressiveness = sampleGaussian(team0.agressivenessMean, team0.agressivenessSD);
+            boidPlayer.maxExhaustion = sampleGaussian(team0.maxExhaustionMean, team0.maxExhaustionSD);
+            boidPlayer.maxVelo = sampleGaussian(team0.maxVeloMean, team0.maxVeloSD);
+            boidPlayer.weight = sampleGaussian(team0.weightMean, team0.weightSD);
         }
         else
         {
@@ -125,6 +129,10 @@ public class Game : MonoBehaviour
             BoidPlayer boidPlayer = create.GetComponent<BoidPlayer>();
             boidPlayer.team = 1;
             boidPlayer.respawnPosition = team1.spawnOrigin;
+            boidPlayer.aggressiveness = sampleGaussian(team1.agressivenessMean, team1.agressivenessSD);
+            boidPlayer.maxExhaustion = sampleGaussian(team1.maxExhaustionMean, team1.maxExhaustionSD);
+            boidPlayer.maxVelo = sampleGaussian(team1.maxVeloMean, team1.maxVeloSD);
+            boidPlayer.weight = sampleGaussian(team1.weightMean, team1.weightSD);
         }
         return create;        
     }
@@ -138,8 +146,8 @@ public class Game : MonoBehaviour
     private float sampleGaussian(float mean, float sd)
     {
         // Two uniform random variables
-        float u1 = Random.Range(0, 1);
-        float u2 = Random.Range(0, 1);
+        float u1 = Random.Range(0.00001f, 0.99999f);
+        float u2 = Random.Range(0.00001f, 0.99999f);
 
         // Box-Muller transform
         float z = Mathf.Sqrt(-2f * Mathf.Log(u1)) * Mathf.Cos(2 * Mathf.PI * u2);

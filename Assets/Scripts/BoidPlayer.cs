@@ -8,10 +8,11 @@ public class BoidPlayer : MonoBehaviour
     public Vector3 respawnPosition;
 
     // Traits
-    private float aggressiveness;
-    private float maxExhaustion;
-    private float maxVelo;
-    private float currentExhaustion;
+    public float aggressiveness;
+    public float maxExhaustion;
+    public float maxVelo;
+    public float weight;
+    public float currentExhaustion;
 
     //[HideInInspector] public GameObject this_instance;
 
