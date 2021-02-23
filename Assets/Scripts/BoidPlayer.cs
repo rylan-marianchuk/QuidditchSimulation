@@ -20,13 +20,18 @@ public class BoidPlayer : MonoBehaviour
     private float unconsciousPenalty;
 
     private Rigidbody rigidbody;
+    private Color teamColor;
 
+    public GameObject other;
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
         // Update the assigned weight from the game creation
         rigidbody.mass = this.weight;
+        GetComponent<Renderer>().material.color = teamColor;
     }
+
+    public void setTeamColor(Color c) { this.teamColor = c; }
 
 
     void FixedUpdate()
@@ -39,7 +44,8 @@ public class BoidPlayer : MonoBehaviour
         if (!isUnconscious)
         {
             // Movement
-            rigidbody.velocity = (Vector3.zero - this.transform.position) * 0.05f;
+            rigidbody.velocity = (Game.instance.snitch.transform.position - this.transform.position).normalized * aggressiveness/10f;
+         
         }
         else if (onHold)
         {
@@ -85,6 +91,8 @@ public class BoidPlayer : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("Player") && !isUnconscious)
         {
+            Debug.Log("Collision between same team.");
+
             // Do nothing if collides with other teammate and randomness fails past the 5% threshold
             BoidPlayer other = collision.gameObject.GetComponent<BoidPlayer>();
             if (other.team == this.team && Random.Range(0.0f, 1.0f) < 0.95) return;
@@ -113,6 +121,9 @@ public class BoidPlayer : MonoBehaviour
         rigidbody.isKinematic = true;
         rigidbody.velocity = Vector3.zero;
         if (Game.instance.debug) Debug.Log("Set Unconscious");
+
+        // Change color to red to see who becomes unconscious
+        this.GetComponent<Renderer>().material.color = Game.instance.unconsciousColor;
     }
 
     private void setConscious()
@@ -121,5 +132,6 @@ public class BoidPlayer : MonoBehaviour
         onHold = false;
         rigidbody.isKinematic = false;
         if (Game.instance.debug) Debug.Log("Set Conscious");
+        this.GetComponent<Renderer>().material.color = teamColor;
     }
 }

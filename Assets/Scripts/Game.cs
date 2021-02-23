@@ -15,7 +15,8 @@ public class Game : MonoBehaviour
     public float unconsciousTimeHold;
 
     public GameObject playerPrefab;
-    
+    public GameObject snitch;
+    public Color unconsciousColor;
 
     public TeamTraits team0;
     public TeamTraits team1;
@@ -32,7 +33,7 @@ public class Game : MonoBehaviour
      */
     void Awake()
     {
-        /*
+        
         // Default team size to 5
         if (! (teamSize >= 5 && teamSize <= 20))
             teamSize = 5;
@@ -45,7 +46,7 @@ public class Game : MonoBehaviour
             GameObject p0 = createPlayer(isTeam0: true);
             team0.players.Add(p0);
         }
-        */
+        
 
         instance = this;
     }
@@ -79,6 +80,7 @@ public class Game : MonoBehaviour
      */
     public void score(int team)
     {
+        // Respawn the snitch
         // Check if this is a first score, where the value of lastTeam scored is frivolous
         if (team0Score + team1Score == 0)
         {
@@ -118,8 +120,8 @@ public class Game : MonoBehaviour
         if (isTeam0)
         {
             create = Instantiate(playerPrefab, team0.spawnOrigin + Random.onUnitSphere * team0.spawnRadius, Quaternion.identity);
-            create.GetComponent<Renderer>().material.color = team0.color;
             BoidPlayer boidPlayer = create.GetComponent<BoidPlayer>();
+            boidPlayer.setTeamColor(team0.color);
             boidPlayer.team = 0;
             boidPlayer.respawnPosition = team0.spawnOrigin;
             boidPlayer.aggressiveness = sampleGaussian(team0.agressivenessMean, team0.agressivenessSD);
@@ -130,8 +132,8 @@ public class Game : MonoBehaviour
         else
         {
             create = Instantiate(playerPrefab, team1.spawnOrigin + Random.onUnitSphere * team1.spawnRadius, Quaternion.identity);
-            create.GetComponent<Renderer>().material.color = team1.color;
             BoidPlayer boidPlayer = create.GetComponent<BoidPlayer>();
+            boidPlayer.setTeamColor(team1.color);
             boidPlayer.team = 1;
             boidPlayer.respawnPosition = team1.spawnOrigin;
             boidPlayer.aggressiveness = sampleGaussian(team1.agressivenessMean, team1.agressivenessSD);
