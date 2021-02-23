@@ -61,6 +61,9 @@ public class Snitch : MonoBehaviour
         */
     }
 
-
+    public void respawn()
+    {
+        transform.position = new Vector3(Random.Range(-48f, 48f), Random.Range(0f, 24f), Random.Range(-48f, 48f));
+    }
 
 }

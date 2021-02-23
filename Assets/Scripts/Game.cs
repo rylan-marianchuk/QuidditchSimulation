@@ -27,6 +27,7 @@ public class Game : MonoBehaviour
     public int team1Score = 0;
     private int lastTeamScored;
 
+    private Snitch snitchScript;
     /**
      * Initialize game by spawning players
      * 
@@ -46,8 +47,8 @@ public class Game : MonoBehaviour
             GameObject p0 = createPlayer(isTeam0: true);
             team0.players.Add(p0);
         }
-        
 
+        snitchScript = snitch.GetComponent<Snitch>();
         instance = this;
     }
 
@@ -58,6 +59,10 @@ public class Game : MonoBehaviour
 
         Gizmos.color = Color.black;
         Gizmos.DrawSphere(team1.spawnOrigin, team1.spawnRadius);
+
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawSphere(Vector3.zero + Vector3.up * 10, 10);
+    
     }
 
     void Start()
@@ -81,6 +86,7 @@ public class Game : MonoBehaviour
     public void score(int team)
     {
         // Respawn the snitch
+        snitchScript.respawn();
         // Check if this is a first score, where the value of lastTeam scored is frivolous
         if (team0Score + team1Score == 0)
         {
