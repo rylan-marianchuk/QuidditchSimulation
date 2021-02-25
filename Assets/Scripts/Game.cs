@@ -24,6 +24,8 @@ public class Game : MonoBehaviour
     public bool debug = true;
 
     public int team0Score = 0;
+    public GameObject textMeshScore0; 
+    public GameObject textMeshScore1;
     public int team1Score = 0;
     private int lastTeamScored;
 
@@ -50,6 +52,7 @@ public class Game : MonoBehaviour
 
         snitchScript = snitch.GetComponent<Snitch>();
         instance = this;
+        updateUI();
     }
 
     void OnDrawGizmos()
@@ -62,12 +65,6 @@ public class Game : MonoBehaviour
 
         Gizmos.color = Color.cyan;
         Gizmos.DrawSphere(Vector3.zero + Vector3.up * 10, 10);
-    
-    }
-
-    void Start()
-    {
-    
     
     }
 
@@ -92,9 +89,11 @@ public class Game : MonoBehaviour
         {
             if (team == 1) team1Score++;
             else team0Score++;
+            updateUI();
             return;
         }
 
+        // Now must check if this is a consecutive score.
         if (team == 1)
         {
             if (lastTeamScored == 1) team1Score += 2;
@@ -113,6 +112,7 @@ public class Game : MonoBehaviour
                 lastTeamScored = 0;
             }
         }
+        updateUI();
     }
 
 
@@ -167,5 +167,15 @@ public class Game : MonoBehaviour
 
         // Apply paramter scale
         return z * sd + mean;
+    }
+
+
+    /**
+     * Called only after a score, update the textmesh pro objects to the new score
+     */
+    private void updateUI()
+    {
+        textMeshScore0.GetComponent<TMPro.TextMeshProUGUI>().text = "Team 0 Slytherin Score: " + team0Score.ToString();
+        textMeshScore1.GetComponent<TMPro.TextMeshProUGUI>().text = "Team 1 Gryffindor Score: " + team1Score.ToString();
     }
 }

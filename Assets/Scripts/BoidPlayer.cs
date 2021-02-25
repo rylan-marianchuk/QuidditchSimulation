@@ -45,7 +45,11 @@ public class BoidPlayer : MonoBehaviour
         {
             // Movement
             rigidbody.velocity = (Game.instance.snitch.transform.position - this.transform.position).normalized * aggressiveness/10f;
-         
+
+            // Increase current exhaustion by some number
+
+            if (maxExhaustion == currentExhaustion)
+                setUnconscious();
         }
         else if (onHold)
         {
