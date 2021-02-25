@@ -30,6 +30,7 @@ public class Game : MonoBehaviour
     private int lastTeamScored;
 
     private Snitch snitchScript;
+
     /**
      * Initialize game by spawning players
      * 
@@ -134,6 +135,8 @@ public class Game : MonoBehaviour
             boidPlayer.maxExhaustion = sampleGaussian(team0.maxExhaustionMean, team0.maxExhaustionSD);
             boidPlayer.maxVelo = sampleGaussian(team0.maxVeloMean, team0.maxVeloSD);
             boidPlayer.weight = sampleGaussian(team0.weightMean, team0.weightSD);
+            if (Random.Range(0f, 1f) < team0.jokerSpawnChance)
+                boidPlayer.isJoker = true;
         }
         else
         {
@@ -146,6 +149,8 @@ public class Game : MonoBehaviour
             boidPlayer.maxExhaustion = sampleGaussian(team1.maxExhaustionMean, team1.maxExhaustionSD);
             boidPlayer.maxVelo = sampleGaussian(team1.maxVeloMean, team1.maxVeloSD);
             boidPlayer.weight = sampleGaussian(team1.weightMean, team1.weightSD);
+            if (Random.Range(0f, 1f) < team1.jokerSpawnChance)
+                boidPlayer.isJoker = true;
         }
         return create;        
     }

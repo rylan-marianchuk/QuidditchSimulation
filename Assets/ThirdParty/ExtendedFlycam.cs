@@ -3,7 +3,12 @@ using System.Collections;
  
 public class ExtendedFlycam : MonoBehaviour
 {
- 
+
+	/**
+	 * =========================================================================================================================
+	 * The following camera movement script was adapted from third party assests at
+	 * http://wiki.unity3d.com/index.php/FlyCam_Extended
+	 */
 	/*
 	EXTENDED FLYCAM
 		Desi Quintans (CowfaceGames.com), 17 August 2012.
@@ -12,15 +17,14 @@ public class ExtendedFlycam : MonoBehaviour
 	LICENSE
 		Free as in speech, and free as in beer.
  
-	FEATURES
+	Rylan Updated movement to:
 		WASD/Arrows:    Movement
-		          Q:    Climb
-		          E:    Drop
-                      Shift:    Move faster
-                    Control:    Move slower
+		          SPACE: Climb
+		          Shift:    Drop
+                    Control:    Move faster
                         End:    Toggle cursor locking to screen (you can also press Ctrl+P to toggle play mode on and off).
 	*/
- 
+
 	public float cameraSensitivity = 90;
 	public float climbSpeed = 4;
 	public float normalMoveSpeed = 10;

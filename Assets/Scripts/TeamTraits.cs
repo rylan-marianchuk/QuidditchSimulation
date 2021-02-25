@@ -27,13 +27,15 @@ public class TeamTraits : ScriptableObject
     public float maxExhaustionMean;
     public float maxExhaustionSD;
 
+    [Tooltip("JokerSpawnChance")]
+    public float jokerSpawnChance;
 
 
     [Header("Spawn info")]
     public Vector3 spawnOrigin;
     public float spawnRadius;
     public Color color;
-
+     
 
     public List<GameObject> players;
 }
