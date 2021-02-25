@@ -1,5 +1,5 @@
 # QuidditchSimulation
-Computer Science 565 Project
+## Computer Science 565 Project
 
 Unity is an engine tuned for multi-agent simulations. In this project I attempt to model the game of Quidditch from the Harry Potter series. [1]
 The reduction and simplification of graphics here is substantial. I instead focus on player behavioral properties.
