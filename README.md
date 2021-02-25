@@ -23,7 +23,7 @@ Much like the distribution of evolutionary strategies that give rise to human in
   - Max Exhaustion
 
 # Uniquely Implemented Behviours
-
+- Joker: Binary trait. Each team has a low chance (between 5% and 15%) chance of having each player be a joker. A Joker isn't actually attracted to the snitch, instead its goal it to destory the player on opposing team closest to the snitch. As such it is given high aggression and low weight so it moves quick.
 
 # Emergent Properties of Players
 
