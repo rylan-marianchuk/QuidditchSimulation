@@ -46,6 +46,7 @@ public class BoidPlayer : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (Game.instance.gameOver) return;
         if (!isUnconscious)
         {
             updateVelocity();

@@ -29,8 +29,10 @@ public class Game : MonoBehaviour
     public GameObject textMeshScore0;
     public GameObject textMeshScore1;
     public GameObject textMeshLastScore;
+    public GameObject textMeshGameOver;
     private int lastTeamScored;
 
+    public bool gameOver = false;
     private Snitch snitchScript;
 
     /**
@@ -53,6 +55,7 @@ public class Game : MonoBehaviour
             team0.players.Add(p0);
         }
 
+        textMeshGameOver.SetActive(false);
         snitchScript = snitch.GetComponent<Snitch>();
         instance = this;
         updateUI();
@@ -76,6 +79,8 @@ public class Game : MonoBehaviour
         if (team0Score == 100 || team1Score == 100)
         {
             // Game Over, stop game
+            gameOver = true;
+            textMeshGameOver.SetActive(true);
         }
     }
 

@@ -35,6 +35,7 @@ public class Snitch : MonoBehaviour
      */
     void FixedUpdate()
     {
+        if (Game.instance.gameOver) return;
         if (slerpRest == 0 && Random.Range(0.0000f, 0.9999f) < changeProportion)
         {
             // Update direction randomly
