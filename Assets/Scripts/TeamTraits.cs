@@ -35,7 +35,12 @@ public class TeamTraits : ScriptableObject
     public Vector3 spawnOrigin;
     public float spawnRadius;
     public Color color;
-     
+    public Color jokerColor;
+
+
+    [Header("Movement Force Weight")]
+    public float snitchWeight;
+    public float collisionAvoidanceWeight;
 
     public List<GameObject> players;
 }

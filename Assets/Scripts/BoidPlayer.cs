@@ -25,6 +25,12 @@ public class BoidPlayer : MonoBehaviour
     // For regular player, this will be the snitch. For jokers, its the closest opponent to the snitch.
     private Vector3 goalPosition;
 
+    private float lambda = 12f;
+    private float setExhaustionThreshold = 0.285f;
+
+    public float thisCollisionWeight;
+    public float thisSnitchWeight;
+
     public GameObject other;
 
     void Start()
@@ -40,36 +46,11 @@ public class BoidPlayer : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (Input.GetKeyUp("u"))
-        {
-            setUnconscious();
-        }
-
         if (!isUnconscious)
         {
-            if (isJoker) goalPosition = getClosestOpponent();
-            else goalPosition = Game.instance.snitch.transform.position;
-            // Movement
-            /**
-             * =========================================================================================================================
-             * The following movement was adapted from Omar Addam and his Boid movement found at:
-             * https://github.com/omaddam/Boids-Simulation/blob/develop/Assets/Boids/Scripts/Bird.cs
-             */
-            rigidbody.velocity = (Game.instance.snitch.transform.position - this.transform.position).normalized * aggressiveness/10f;
-
-            // Increase current exhaustion by velocity * weight
-
-
-            // Update rotation to point in direction of movement.
-            transform.forward = rigidbody.velocity.normalized;
-
-
-            /**
-             * End of attributed code ===================================================================================================
-             */
-            if (maxExhaustion == currentExhaustion)
-                setUnconscious();
+            updateVelocity();
         }
+        // Check if holding for penalty at spawn location
         else if (onHold)
         {
             unconsciousPenalty--;
@@ -82,18 +63,97 @@ public class BoidPlayer : MonoBehaviour
             rigidbody.isKinematic = false;
             rigidbody.velocity = Vector3.down*2.5f;
         }
-
     }
 
 
     /**
-     * Return the correct direction for the player to move so that they are optimally
+     * Return the correct direction for the player to move so that they avoid collision with each other or environment.
+     * Jokers will not try to avoid collision.
      */
     private Vector3 avoidCollision()
     {
+        Vector3 avoid = Vector3.zero;
+        // Avoid collision with same and other team
+        foreach (var player in Game.instance.team1.players)
+        {
+            Vector3 diff = transform.position - player.transform.position;
+            if (player.GetComponent<BoidPlayer>() == this || (diff).magnitude > 2f) continue;
+            avoid += diff;
+        }
 
+        foreach (var player in Game.instance.team0.players)
+        {
+            Vector3 diff = transform.position - player.transform.position;
+            if (player.GetComponent<BoidPlayer>() == this || (diff).magnitude > 2f) continue;
+            avoid += diff;
+        }
+
+
+
+
+        return avoid;
     }
 
+
+    private Vector3 avoidCollisionWALL()
+    {
+        Vector3 avoid = Vector3.zero;
+        // Check if heading to collision
+        if (Physics.SphereCast(transform.position,
+            8f,
+            transform.forward,
+            out RaycastHit hitInfo,
+            8f, 1 << 8))
+        {
+            avoid += transform.position - hitInfo.point;
+        }
+        return avoid;
+    }
+
+    private void updateVelocity()
+    {
+        // Movement
+        /**
+         * =========================================================================================================================
+         * The following movement was adapted from Omar Addam and his Boid movement found at:
+         * https://github.com/omaddam/Boids-Simulation/blob/develop/Assets/Boids/Scripts/Bird.cs
+         */
+        Vector3 newVelo = rigidbody.velocity;
+        if (isJoker)
+        {
+            goalPosition = getClosestOpponent();
+            newVelo = (goalPosition-transform.position).normalized * Game.instance.jokerSpeed;
+            rigidbody.velocity = newVelo;
+            transform.forward = rigidbody.velocity.normalized;
+            return;
+        }
+
+        goalPosition = Game.instance.snitch.transform.position - this.transform.position;
+        newVelo += (avoidCollision().normalized* thisCollisionWeight/2f + goalPosition.normalized* thisSnitchWeight + avoidCollisionWALL()*this.thisCollisionWeight/2f) * Time.deltaTime;
+        
+
+        // Clamp the velocity to be max velo
+        rigidbody.velocity = Mathf.Clamp(newVelo.magnitude, 0f, maxVelo) * newVelo.normalized;
+
+        // Update rotation to point in direction of movement.
+        transform.forward = rigidbody.velocity.normalized;
+
+
+        /**
+         * End of attributed code ===================================================================================================
+         */
+
+        // Update current exhaustion by velocity * weight if sample from exp ~ \lambda passes the threshold
+        if (sampleExponential(lambda) < setExhaustionThreshold)
+            currentExhaustion = rigidbody.velocity.magnitude * weight;
+
+        // Dampen velocity to ensure does not reach max velocity.
+        if (currentExhaustion >= aggressiveness)
+            rigidbody.velocity *= 0.99f;
+
+        if (maxExhaustion == currentExhaustion)
+            setUnconscious();
+    }
 
     /**
      * 
@@ -164,6 +224,7 @@ public class BoidPlayer : MonoBehaviour
 
         // Change color to red to see who becomes unconscious
         this.GetComponent<Renderer>().material.color = Game.instance.unconsciousColor;
+        currentExhaustion = 0;
     }
 
     
@@ -195,9 +256,20 @@ public class BoidPlayer : MonoBehaviour
         Vector3 min = Vector3.positiveInfinity ;
         foreach (GameObject player in opponents)
         {
-            if ((player.transform.position - Game.instance.snitch.transform.position).sqrMagnitude < min.sqrMagnitude)
+            if ((player.transform.position - Game.instance.snitch.transform.position).magnitude < min.magnitude)
                 min = player.transform.position;
         }
         return min;
+    }
+
+
+    /**
+     * 
+     * Sample from the exponential distribution
+     * 
+     */
+    private float sampleExponential(float lambda)
+    {
+        return -Mathf.Log(1 - Random.Range(0f, 1f)) / lambda;
     }
 }

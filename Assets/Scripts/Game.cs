@@ -12,6 +12,7 @@ public class Game : MonoBehaviour
     public static Game instance;
 
     public int teamSize = 5;
+    public float jokerSpeed;
     public float unconsciousTimeHold;
 
     public GameObject playerPrefab;
@@ -21,12 +22,13 @@ public class Game : MonoBehaviour
     public TeamTraits team0;
     public TeamTraits team1;
 
-    public bool debug = true;
+    public bool debug = false;
 
     public int team0Score = 0;
-    public GameObject textMeshScore0; 
-    public GameObject textMeshScore1;
     public int team1Score = 0;
+    public GameObject textMeshScore0;
+    public GameObject textMeshScore1;
+    public GameObject textMeshLastScore;
     private int lastTeamScored;
 
     private Snitch snitchScript;
@@ -124,33 +126,57 @@ public class Game : MonoBehaviour
     private GameObject createPlayer(bool isTeam0)
     {
         GameObject create;
+        
         if (isTeam0)
         {
-            create = Instantiate(playerPrefab, team0.spawnOrigin + Random.onUnitSphere * team0.spawnRadius, Quaternion.identity);
+
+            Vector3 spawnlocation = team0.spawnOrigin + Random.onUnitSphere * team0.spawnRadius;
+            create = Instantiate(playerPrefab, spawnlocation, Quaternion.identity);
             BoidPlayer boidPlayer = create.GetComponent<BoidPlayer>();
             boidPlayer.setTeamColor(team0.color);
             boidPlayer.team = 0;
-            boidPlayer.respawnPosition = team0.spawnOrigin;
+            boidPlayer.respawnPosition = spawnlocation;
             boidPlayer.aggressiveness = sampleGaussian(team0.agressivenessMean, team0.agressivenessSD);
             boidPlayer.maxExhaustion = sampleGaussian(team0.maxExhaustionMean, team0.maxExhaustionSD);
             boidPlayer.maxVelo = sampleGaussian(team0.maxVeloMean, team0.maxVeloSD);
             boidPlayer.weight = sampleGaussian(team0.weightMean, team0.weightSD);
+            boidPlayer.thisSnitchWeight = team0.snitchWeight;
+            boidPlayer.thisCollisionWeight = team0.collisionAvoidanceWeight;
+
             if (Random.Range(0f, 1f) < team0.jokerSpawnChance)
+            {
+                // This player is a joker
                 boidPlayer.isJoker = true;
+                boidPlayer.setTeamColor(team0.jokerColor);
+                boidPlayer.aggressiveness = 70f;
+                boidPlayer.maxVelo = 100f;
+                boidPlayer.weight = 2f;
+            }
         }
         else
         {
-            create = Instantiate(playerPrefab, team1.spawnOrigin + Random.onUnitSphere * team1.spawnRadius, Quaternion.identity);
+            Vector3 spawnlocation = team1.spawnOrigin + Random.onUnitSphere * team1.spawnRadius;
+            create = Instantiate(playerPrefab, spawnlocation, Quaternion.identity);
             BoidPlayer boidPlayer = create.GetComponent<BoidPlayer>();
             boidPlayer.setTeamColor(team1.color);
             boidPlayer.team = 1;
-            boidPlayer.respawnPosition = team1.spawnOrigin;
+            boidPlayer.respawnPosition = spawnlocation;
             boidPlayer.aggressiveness = sampleGaussian(team1.agressivenessMean, team1.agressivenessSD);
             boidPlayer.maxExhaustion = sampleGaussian(team1.maxExhaustionMean, team1.maxExhaustionSD);
             boidPlayer.maxVelo = sampleGaussian(team1.maxVeloMean, team1.maxVeloSD);
             boidPlayer.weight = sampleGaussian(team1.weightMean, team1.weightSD);
+            boidPlayer.thisSnitchWeight = team1.snitchWeight;
+            boidPlayer.thisCollisionWeight = team1.collisionAvoidanceWeight;
             if (Random.Range(0f, 1f) < team1.jokerSpawnChance)
+            {
+                // This player is a joker
                 boidPlayer.isJoker = true;
+                boidPlayer.setTeamColor(team1.jokerColor);
+                boidPlayer.aggressiveness = 70f;
+                boidPlayer.maxVelo = 100f;
+                boidPlayer.weight = 2f;
+            }
+                
         }
         return create;        
     }
@@ -182,5 +208,7 @@ public class Game : MonoBehaviour
     {
         textMeshScore0.GetComponent<TMPro.TextMeshProUGUI>().text = "Team 0 Slytherin Score: " + team0Score.ToString();
         textMeshScore1.GetComponent<TMPro.TextMeshProUGUI>().text = "Team 1 Gryffindor Score: " + team1Score.ToString();
+        if (team0Score + team1Score == 0) return;
+        textMeshLastScore.GetComponent<TMPro.TextMeshProUGUI>().text = "Last Scored: " + (lastTeamScored == 1 ? "Gryffindor" : "Slytherin");
     }
 }
