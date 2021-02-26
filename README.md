@@ -35,7 +35,8 @@ In order to ensure players don't continuously go unconscious I use a velocity da
 # Emergent Properties of Players
 
 | Black Team Capturing Snitch |
-| <img src="gifs/capture.gif" height="450" /> |
+| :--------------------------: |
+| <img src="Assets/gifs/capture.gif" height="450" /> |
 
 # References
 1. https://harrypotter.fandom.com/wiki/Quidditch
