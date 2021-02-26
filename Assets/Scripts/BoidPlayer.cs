@@ -25,8 +25,8 @@ public class BoidPlayer : MonoBehaviour
     // For regular player, this will be the snitch. For jokers, its the closest opponent to the snitch.
     private Vector3 goalPosition;
 
-    private float lambda = 12f;
-    private float setExhaustionThreshold = 0.285f;
+    public float lambda = 12f;
+    public float setExhaustionThreshold = 0.285f;
 
     public float thisCollisionWeight;
     public float thisSnitchWeight;
@@ -88,9 +88,6 @@ public class BoidPlayer : MonoBehaviour
             if (player.GetComponent<BoidPlayer>() == this || (diff).magnitude > 2f) continue;
             avoid += diff;
         }
-
-
-
 
         return avoid;
     }
