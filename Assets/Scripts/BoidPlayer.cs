@@ -14,7 +14,8 @@ public class BoidPlayer : MonoBehaviour
     public float weight;
     public float currentExhaustion;
     public bool isJoker = false;
-
+    public float urge;
+   
     private bool isUnconscious = false;
     private bool onHold = false;
     private float unconsciousPenalty;
@@ -32,6 +33,8 @@ public class BoidPlayer : MonoBehaviour
     public float thisSnitchWeight;
 
     public GameObject other;
+
+    private bool collisionAlreadyHandled = false;
 
     void Start()
     {
@@ -93,21 +96,30 @@ public class BoidPlayer : MonoBehaviour
     }
 
 
+    /**
+     * 
+     * Determines the new vector to move if the arena is close using Physics.Spherecast
+     * 
+     */
     private Vector3 avoidCollisionWALL()
     {
         Vector3 avoid = Vector3.zero;
         // Check if heading to collision
         if (Physics.SphereCast(transform.position,
-            8f,
+            3f,
             transform.forward,
             out RaycastHit hitInfo,
-            8f, 1 << 8))
+            3f, 1 << 8))
         {
             avoid += transform.position - hitInfo.point;
         }
         return avoid;
     }
 
+
+    /**
+     * The boid movement calculation, incorporating forces from other player avoidance, wall avoidance, and snitch attraction.
+     */
     private void updateVelocity()
     {
         // Movement
@@ -145,8 +157,11 @@ public class BoidPlayer : MonoBehaviour
         if (sampleExponential(lambda) < setExhaustionThreshold)
             currentExhaustion = rigidbody.velocity.magnitude * weight;
 
-        // Dampen velocity to ensure does not reach max velocity.
-        if (currentExhaustion >= aggressiveness)
+        // Check if urge needed
+        if ((Game.instance.snitch.transform.position - transform.position).magnitude < urge)
+            rigidbody.velocity *= 1.12f;
+        // Otherwise check to dampen velocity to ensure does not reach max velocity.
+        else if (currentExhaustion >= aggressiveness)
             rigidbody.velocity *= 0.99f;
 
         if (maxExhaustion == currentExhaustion)
@@ -183,10 +198,15 @@ public class BoidPlayer : MonoBehaviour
 
         else if (collision.gameObject.CompareTag("Player") && !isUnconscious)
         {
-            if (Game.instance.debug) Debug.Log("Collision between same team.");
-
+            // Handle the case of double instances for OnCollisionEnter call
+            if (collisionAlreadyHandled)
+            {
+                collisionAlreadyHandled = false;
+                return;
+            }
             // Do nothing if collides with other teammate and randomness fails past the 5% threshold
             BoidPlayer other = collision.gameObject.GetComponent<BoidPlayer>();
+            other.collisionAlreadyHandled = true;
             if (other.team == this.team && Random.Range(0.0f, 1.0f) < 0.95) return;
 
             float myval = this.aggressiveness * (Random.Range(0, 1) * (1.2f - 0.8f) + 0.8f) * (1 - (this.currentExhaustion / this.maxExhaustion));
@@ -206,11 +226,7 @@ public class BoidPlayer : MonoBehaviour
     }
 
 
-    /**
-     * 
-     * 
-     * 
-     */
+  
     public void setUnconscious(){
         if (isUnconscious) return;
         isUnconscious = true;
@@ -226,11 +242,6 @@ public class BoidPlayer : MonoBehaviour
     }
 
     
-    
-    /**
-     * 
-     * 
-     */
     private void setConscious()
     {
         isUnconscious = false;

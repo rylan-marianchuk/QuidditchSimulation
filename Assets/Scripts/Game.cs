@@ -61,18 +61,6 @@ public class Game : MonoBehaviour
         updateUI();
     }
 
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(team0.spawnOrigin, team0.spawnRadius);
-
-        Gizmos.color = Color.black;
-        Gizmos.DrawSphere(team1.spawnOrigin, team1.spawnRadius);
-
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawSphere(Vector3.zero + Vector3.up * 10, 10);
-    
-    }
 
     void Update()
     {
@@ -145,6 +133,7 @@ public class Game : MonoBehaviour
             boidPlayer.maxExhaustion = sampleGaussian(team0.maxExhaustionMean, team0.maxExhaustionSD);
             boidPlayer.maxVelo = sampleGaussian(team0.maxVeloMean, team0.maxVeloSD);
             boidPlayer.weight = sampleGaussian(team0.weightMean, team0.weightSD);
+            boidPlayer.urge = sampleGaussian(team0.urgeMean, team0.urgeSD);
             boidPlayer.thisSnitchWeight = team0.snitchWeight;
             boidPlayer.thisCollisionWeight = team0.collisionAvoidanceWeight;
 
@@ -170,6 +159,7 @@ public class Game : MonoBehaviour
             boidPlayer.maxExhaustion = sampleGaussian(team1.maxExhaustionMean, team1.maxExhaustionSD);
             boidPlayer.maxVelo = sampleGaussian(team1.maxVeloMean, team1.maxVeloSD);
             boidPlayer.weight = sampleGaussian(team1.weightMean, team1.weightSD);
+            boidPlayer.urge = sampleGaussian(team1.urgeMean, team1.urgeSD);
             boidPlayer.thisSnitchWeight = team1.snitchWeight;
             boidPlayer.thisCollisionWeight = team1.collisionAvoidanceWeight;
             if (Random.Range(0f, 1f) < team1.jokerSpawnChance)

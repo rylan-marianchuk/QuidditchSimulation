@@ -20,13 +20,15 @@ MonoBehaviour:
   agressivenessSD: 3
   maxExhaustionMean: 65
   maxExhaustionSD: 13
-  jokerSpawnChance: 0.2
+  urgeMean: 4
+  urgeSD: 2
+  jokerSpawnChance: 0.1
   spawnOrigin: {x: 32, y: 8, z: -32}
   spawnRadius: 7
   color: {r: 0, g: 0, b: 0, a: 0}
   jokerColor: {r: 0.5849056, g: 0.33383763, b: 0.33383763, a: 0}
   snitchWeight: 3.8
-  collisionAvoidanceWeight: 3
+  collisionAvoidanceWeight: 1.2
   players:
   - {fileID: 0}
   - {fileID: 0}

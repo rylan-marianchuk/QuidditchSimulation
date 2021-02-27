@@ -38,9 +38,6 @@ public class Snitch : MonoBehaviour
         if (Game.instance.gameOver) return;
         if (slerpRest == 0 && Random.Range(0.0000f, 0.9999f) < changeProportion)
         {
-            // Update direction randomly
-            //if (Game.instance.debug) Debug.Log("Snitch Updated velocity vector!");
-
             newDirection = Random.onUnitSphere * scaledVelocity;
         }
         
@@ -48,18 +45,6 @@ public class Snitch : MonoBehaviour
         if (slerpRest == 0)
             rigidbody.velocity = Vector3.Slerp(rigidbody.velocity, newDirection, Time.deltaTime);
         else slerpRest--;
-
-
-        /*
-        // Check if nearing boundary
-        if (Physics.SphereCast(transform.position, avoidanceRadius, transform.forward, out RaycastHit hit, 1 << 8))
-        {
-            slerpRest = 500;
-            // Update direction directly away from boundary
-            rigidbody.velocity = (transform.position - hit.point)* 0.02f;
-            Debug.Log("HIT BOUNDARY");
-        }
-        */
     }
 
     public void respawn()

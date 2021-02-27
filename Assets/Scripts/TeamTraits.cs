@@ -27,6 +27,10 @@ public class TeamTraits : ScriptableObject
     public float maxExhaustionMean;
     public float maxExhaustionSD;
 
+    [Tooltip("Urge")]
+    public float urgeMean;
+    public float urgeSD;
+
     [Tooltip("JokerSpawnChance")]
     public float jokerSpawnChance;
 
