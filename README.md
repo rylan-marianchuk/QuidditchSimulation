@@ -38,6 +38,10 @@ In order to ensure players don't continuously go unconscious I use a velocity da
 | :--------------------------: |
 | <img src="Assets/gifs/capture.gif" height="450" /> |
 
+| Urge behaviour then Colliding with Arena |
+| :--------------------------: |
+| <img src="Assets/gifs/urge.gif" height="450" /> |
+
 # References
 1. https://harrypotter.fandom.com/wiki/Quidditch
 2. https://github.com/omaddam/Boids-Simulation
